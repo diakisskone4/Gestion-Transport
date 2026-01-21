@@ -1,0 +1,121 @@
+<header class="bg-dark text-white sticky-top shadow">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between py-3">
+      <h1 class="h4 mb-3 mb-md-0 text-center text-md-start">
+        <i class="bi bi-truck text-primary me-2"></i>
+        <span class="text-white">Plateforme Transport</span>
+      </h1>
+      
+      <nav class="navbar navbar-expand-md p-0 navbar-dark">
+        <button class="navbar-toggler border-primary" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a routerLink="/" 
+                 routerLinkActive="active"
+                 #homeLink="routerLinkActive"
+                 [class.active]="homeLink.isActive"
+                 class="nav-link text-white"
+                 aria-current="page">
+                <i class="bi bi-house-door me-1"></i>
+                Accueil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/bookings" 
+                 routerLinkActive="active"
+                 class="nav-link text-white">
+                <i class="bi bi-journal-bookmark me-1"></i>
+                Bookings
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/vehicles" 
+                 routerLinkActive="active"
+                 class="nav-link text-white">
+                <i class="bi bi-truck me-1"></i>
+                Véhicules
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/routes" 
+                 routerLinkActive="active"
+                 class="nav-link text-white">
+                <i class="bi bi-signpost me-1"></i>
+                Trajets
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/companies" 
+                 routerLinkActive="active"
+                 class="nav-link text-white">
+                <i class="bi bi-building me-1"></i>
+                Compagnies
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="/payments" 
+                 routerLinkActive="active"
+                 class="nav-link text-white">
+                <i class="bi bi-credit-card me-1"></i>
+                Paiements
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="flex-grow-1 bg-light" id="main-content">
+  <div class="container py-4">
+    <router-outlet></router-outlet>
+  </div>
+</main>
+
+<footer class="bg-dark text-white py-4 mt-auto">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <h5 class="mb-2">
+          <i class="bi bi-truck text-primary me-2"></i>
+          Plateforme Transport
+        </h5>
+        <p class="mb-0 text-white-50 small">
+          Votre solution de gestion de transport complète et professionnelle.
+        </p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="mb-2">
+          © 2026 – Plateforme Transport. Tous droits réservés.
+        </p>
+        <div class="d-flex flex-column flex-md-row justify-content-md-end gap-2">
+          <a href="#main-content" class="text-white-50 text-decoration-none small">
+            <i class="bi bi-arrow-up-circle me-1"></i>
+            Retour en haut
+          </a>
+          <span class="text-white-50 d-none d-md-inline">•</span>
+          <a href="#" class="text-white-50 text-decoration-none small">
+            <i class="bi bi-shield-check me-1"></i>
+            Confidentialité
+          </a>
+          <span class="text-white-50 d-none d-md-inline">•</span>
+          <a href="#" class="text-white-50 text-decoration-none small">
+            <i class="bi bi-file-text me-1"></i>
+            Conditions
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

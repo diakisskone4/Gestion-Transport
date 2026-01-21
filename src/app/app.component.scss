@@ -1,0 +1,158 @@
+/* Import Bootstrap SCSS (optionnel) */
+// @import "bootstrap/scss/bootstrap";
+
+/* Variables personnalisées */
+:root {
+  --primary-color: #0d6efd; /* Bleu Bootstrap primary */
+  --primary-dark: #0b5ed7;  /* Version plus foncée pour hover */
+  --dark-color: #212529; /* Couleur Bootstrap dark */
+  --dark-light: #343a40; /* Version légèrement plus claire pour le gradient */
+  --light-color: #f8f9fa; /* Couleur Bootstrap light */
+}
+
+/* Styles personnalisés */
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-color);
+}
+
+/* Navigation */
+.nav-link {
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  margin: 0 0.125rem;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Style du bouton hamburger */
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.3);
+  
+  &:hover {
+    border-color: var(--primary-color);
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    background-color: var(--dark-color); /* Même couleur que le header/footer */
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-link {
+    text-align: center;
+    padding: 0.75rem;
+    margin: 0.25rem 0;
+  }
+}
+
+/* Animation pour les transitions de route */
+router-outlet + * {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Amélioration de l'accessibilité */
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Icônes dans le header */
+header .bi-truck {
+  color: var(--primary-color);
+}
+
+/* Espacement pour le contenu principal */
+main {
+  min-height: calc(100vh - 140px); /* Hauteur minimum moins header/footer */
+}
+
+/* Style pour les cartes et composants */
+.card {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Style pour les boutons */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+
+  &:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+  }
+}
+
+/* Support pour le mode sombre */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  .bg-light {
+    background-color: #1e1e1e !important;
+  }
+  
+  .card {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+
+  .text-dark {
+    color: #e0e0e0 !important;
+  }
+
+  .border {
+    border-color: #444 !important;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}

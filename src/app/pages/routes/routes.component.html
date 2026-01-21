@@ -1,0 +1,25 @@
+<div class="page">
+  <h2>Trajets</h2>
+
+  <table *ngIf="routes.length; else empty">
+    <tr>
+      <th>#</th>
+      <th>Origine</th>
+      <th>Destination</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let r of routes; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ r.origin }}</td>
+      <td>{{ r.destination }}</td>
+      <td>
+        <button (click)="delete(r.id)">Supprimer</button>
+      </td>
+    </tr>
+  </table>
+
+  <ng-template #empty>
+    <p class="empty">Aucun trajet trouvé.</p>
+  </ng-template>
+</div>

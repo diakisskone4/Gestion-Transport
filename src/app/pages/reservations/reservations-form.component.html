@@ -1,0 +1,19 @@
+<div class="form-page">
+  <h2>{{ id ? 'Modifier Réservation' : 'Nouvelle Réservation' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group">
+      <label>Client</label>
+      <input type="text" formControlName="customer" />
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" formControlName="date" />
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">
+      Enregistrer
+    </button>
+  </form>
+</div>

@@ -1,0 +1,28 @@
+<div class="page">
+  <h2>Réservations</h2>
+
+  <table *ngIf="reservations.length; else empty">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Client</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reservations; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ r.customer }}</td>
+        <td>{{ r.date | date }}</td>
+        <td>
+          <button (click)="delete(r.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #empty>
+    <p class="empty">Aucune réservation trouvée.</p>
+  </ng-template>
+</div>

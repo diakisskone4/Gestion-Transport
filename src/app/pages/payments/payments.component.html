@@ -1,0 +1,25 @@
+<div class="page">
+  <h2>Paiements</h2>
+
+  <table *ngIf="payments.length; else empty">
+    <tr>
+      <th>#</th>
+      <th>Montant</th>
+      <th>Statut</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let p of payments; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ p.amount }} FCFA</td>
+      <td>{{ p.status }}</td>
+      <td>
+        <button (click)="delete(p.id)">Supprimer</button>
+      </td>
+    </tr>
+  </table>
+
+  <ng-template #empty>
+    <p class="empty">Aucun paiement enregistré.</p>
+  </ng-template>
+</div>

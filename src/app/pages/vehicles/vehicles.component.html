@@ -1,0 +1,25 @@
+<div class="page">
+  <h2>Véhicules</h2>
+
+  <table *ngIf="vehicles.length; else empty">
+    <tr>
+      <th>#</th>
+      <th>Immatriculation</th>
+      <th>Modèle</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let v of vehicles; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ v.plate_number }}</td>
+      <td>{{ v.model }}</td>
+      <td>
+        <button (click)="delete(v.id)">Supprimer</button>
+      </td>
+    </tr>
+  </table>
+
+  <ng-template #empty>
+    <p class="empty">Aucun véhicule enregistré.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,23 @@
+<div class="page">
+  <h2>Compagnies</h2>
+
+  <table *ngIf="companies.length; else empty">
+    <tr>
+      <th>#</th>
+      <th>Nom</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let c of companies; index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ c.name }}</td>
+      <td>
+        <button (click)="delete(c.id)">Supprimer</button>
+      </td>
+    </tr>
+  </table>
+
+  <ng-template #empty>
+    <p class="empty">Aucune compagnie trouvée.</p>
+  </ng-template>
+</div>

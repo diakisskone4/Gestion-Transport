@@ -1,0 +1,14 @@
+<div class="form-page">
+  <h2>{{ id ? 'Modifier Compagnie' : 'Nouvelle Compagnie' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group">
+      <label>Nom de la compagnie</label>
+      <input type="text" formControlName="name" />
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">
+      Enregistrer
+    </button>
+  </form>
+</div>
