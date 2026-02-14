@@ -1,0 +1,20 @@
+<h2>Paiements</h2>
+
+<div *ngIf="paiement; else paiementForm">
+  <p><strong>ID :</strong> {{ paiement.id }}</p>
+  <p><strong>Réservation :</strong> {{ paiement.reservation }}</p>
+  <p><strong>Montant :</strong> {{ paiement.montant }} FCFA</p>
+  <p><strong>Statut :</strong> {{ paiement.statut }}</p>
+  <p *ngIf="paiement.date_paiement"><strong>Date :</strong> {{ paiement.date_paiement | date:'short' }}</p>
+</div>
+
+<ng-template #paiementForm>
+  <input
+    type="number"
+    [(ngModel)]="montant"
+    placeholder="Montant"
+  >
+  <button (click)="payer()">Payer</button>
+</ng-template>
+
+<p>{{ message }}</p>

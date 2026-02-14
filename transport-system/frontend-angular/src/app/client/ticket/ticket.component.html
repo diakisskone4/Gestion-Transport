@@ -1,0 +1,10 @@
+<h2>Ticket</h2>
+
+<div *ngIf="data">
+  <p>Client : {{ data.nom }}</p>
+  <p>Trajet : {{ data.trajet }}</p>
+  <p>Place : {{ data.numeroPlace }}</p>
+  <p>Montant : {{ data.montant }} FCFA</p>
+
+  <button (click)="print()">Imprimer</button>
+</div>

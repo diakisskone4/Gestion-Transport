@@ -1,0 +1,30 @@
+<div class="form-container">
+  <h2>Créer un compte</h2>
+
+  <div class="input-group">
+    <input
+      [(ngModel)]="username"
+      placeholder="Nom d'utilisateur"
+      required
+    >
+  </div>
+
+  <div class="input-group">
+    <input
+      [(ngModel)]="password"
+      type="password"
+      placeholder="Mot de passe"
+      required
+    >
+  </div>
+
+  <button (click)="register()" [disabled]="loading">
+    {{ loading ? 'Inscription...' : 'S’inscrire' }}
+  </button>
+
+  <p class="error-message" *ngIf="error">{{ error }}</p>
+
+  <a class="login-link" routerLink="/login">
+    Déjà inscrit ? Se connecter
+  </a>
+</div>

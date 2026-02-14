@@ -1,0 +1,58 @@
+<style>
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  aside {
+    width: 240px;
+    background: #212529;
+    color: #fff;
+    padding: 20px;
+  }
+
+  aside h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #0d6efd;
+  }
+
+  aside a {
+    display: block;
+    color: #ddd;
+    text-decoration: none;
+    margin: 12px 0;
+  }
+
+  aside a:hover {
+    color: #fff;
+    font-weight: bold;
+  }
+
+  main {
+    flex: 1;
+    padding: 20px;
+    background: #f4f6f8;
+  }
+</style>
+
+<div class="layout">
+
+  <!-- MENU ADMIN -->
+  <aside>
+    <h3>Administrateur</h3>
+
+    <a routerLink="/admin">Dashboard</a>
+    <a routerLink="/admin/trajets">Trajets</a>
+    <a routerLink="/admin/reservations">Réservations</a>
+    <a routerLink="/admin/paiements">Paiements</a>
+    <a routerLink="/admin/chat">Messages</a>
+    <a routerLink="/login">Déconnexion</a>
+  </aside>
+
+  <!-- CONTENU -->
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

@@ -1,0 +1,9 @@
+<h2>Trajets disponibles</h2>
+
+<div *ngFor="let t of trajets">
+  <b>{{ t.villeDepart }} → {{ t.villeArrivee }}</b><br>
+  Heure : {{ t.heureDepart }} <br>
+  Prix : {{ t.prix }} FCFA <br>
+  <button (click)="reserver(t.id!)">Réserver</button>
+  <hr>
+</div>

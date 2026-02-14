@@ -1,0 +1,8 @@
+<h2>Support</h2>
+
+<div *ngFor="let m of messages">
+  {{ m.contenu }}
+</div>
+
+<input [(ngModel)]="contenu">
+<button (click)="envoyer()">Envoyer</button>

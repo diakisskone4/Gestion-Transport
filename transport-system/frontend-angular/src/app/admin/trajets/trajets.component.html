@@ -1,0 +1,47 @@
+<h2>Gestion des Trajets</h2>
+<p>Ajouter, modifier ou supprimer les trajets disponibles.</p>
+
+<hr />
+
+<form (ngSubmit)="submit()" style="margin-bottom: 20px;">
+  <label>Ville de départ :</label>
+  <input [(ngModel)]="form.villeDepart" name="villeDepart" required />
+
+  <label>Ville d’arrivée :</label>
+  <input [(ngModel)]="form.villeArrivee" name="villeArrivee" required />
+
+  <label>Heure de départ :</label>
+  <input [(ngModel)]="form.heureDepart" name="heureDepart" required />
+
+  <label>Prix :</label>
+  <input type="number" [(ngModel)]="form.prix" name="prix" required />
+
+  <button type="submit">{{ isEdit ? 'Mettre à jour' : 'Ajouter' }}</button>
+  <button type="button" (click)="reset()">Annuler</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Départ</th>
+      <th>Arrivée</th>
+      <th>Heure</th>
+      <th>Prix</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of trajets">
+      <td>{{ t.id }}</td>
+      <td>{{ t.villeDepart }}</td>
+      <td>{{ t.villeArrivee }}</td>
+      <td>{{ t.heureDepart }}</td>
+      <td>{{ t.prix | currency:'EUR' }}</td>
+      <td>
+        <button (click)="edit(t)">Modifier</button>
+        <button (click)="delete(t.id)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

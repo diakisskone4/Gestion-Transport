@@ -1,0 +1,30 @@
+<div class="form-container">
+  <h2>Connexion</h2>
+
+  <div class="input-group">
+    <input
+      [(ngModel)]="username"
+      placeholder="Nom d'utilisateur"
+      required
+    >
+  </div>
+
+  <div class="input-group">
+    <input
+      [(ngModel)]="password"
+      type="password"
+      placeholder="Mot de passe"
+      required
+    >
+  </div>
+
+  <button (click)="login()" [disabled]="loading">
+    {{ loading ? 'Connexion...' : 'Se connecter' }}
+  </button>
+
+  <p class="error-message" *ngIf="error">{{ error }}</p>
+
+  <a class="register-link" routerLink="/register">
+    Créer un compte
+  </a>
+</div>

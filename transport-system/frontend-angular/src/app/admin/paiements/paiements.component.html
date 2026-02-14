@@ -1,0 +1,25 @@
+<h2>Gestion des Paiements</h2>
+<p>Liste des paiements effectués par les clients.</p>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Réservation</th>
+      <th>Montant</th>
+      <th>Date</th>
+      <th>Statut</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of paiements">
+      <td>{{ p.id }}</td>
+      <td>{{ p.reservation }}</td>
+      <td>{{ p.montant | currency:'EUR' }}</td>
+      <td>{{ p.date_paiement | date:'short' }}</td>
+      <td>{{ p.statut }}</td>
+    </tr>
+  </tbody>
+</table>

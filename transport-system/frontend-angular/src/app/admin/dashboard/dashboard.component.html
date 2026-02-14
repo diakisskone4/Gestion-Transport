@@ -1,0 +1,48 @@
+<h2>Dashboard Administrateur</h2>
+<p>Bienvenue dans l’espace d’administration du système de transport.</p>
+
+<hr />
+
+<!-- Chargement -->
+<p *ngIf="loading">Chargement des statistiques...</p>
+
+<!-- Statistiques -->
+<div *ngIf="!loading" style="display:grid; grid-template-columns: repeat(2,1fr); gap:15px; max-width:700px">
+
+  <div style="background:#fff; border-left:5px solid #0d6efd; padding:15px">
+    <h3>🚍 Trajets</h3>
+    <p><strong>{{ stats.trajets }}</strong> trajets enregistrés</p>
+    <a routerLink="/admin/trajets"><button>Gérer</button></a>
+  </div>
+
+  <div style="background:#fff; border-left:5px solid #198754; padding:15px">
+    <h3>📄 Réservations</h3>
+    <p><strong>{{ stats.reservations }}</strong> réservations</p>
+    <a routerLink="/admin/reservations"><button>Voir</button></a>
+  </div>
+
+  <div style="background:#fff; border-left:5px solid #ffc107; padding:15px">
+    <h3>💳 Paiements</h3>
+    <p><strong>{{ stats.paiements }}</strong> paiements</p>
+    <p>Total : <strong>{{ stats.total_montant | currency:'EUR' }}</strong></p>
+    <a routerLink="/admin/paiements"><button>Voir</button></a>
+  </div>
+
+  <div style="background:#fff; border-left:5px solid #dc3545; padding:15px">
+    <h3>💬 Messages</h3>
+    <p><strong>{{ stats.messages }}</strong> messages</p>
+    <a routerLink="/admin/chat"><button>Ouvrir</button></a>
+  </div>
+
+</div>
+
+<hr />
+
+<p>Vous êtes connecté en tant qu’<strong>Administrateur</strong>.</p>
+
+<button
+  (click)="logout()"
+  style="margin-top:20px; background:#d9534f; color:white; border:none; padding:10px 15px; border-radius:4px; cursor:pointer"
+>
+  Se déconnecter
+</button>

@@ -1,0 +1,24 @@
+<h2>Chat Administrateur</h2>
+<p>Discuter avec les clients.</p>
+
+<hr />
+
+<div>
+  <label>ID du client :</label>
+  <input [(ngModel)]="userId" placeholder="Entrez l'ID du client" />
+  <button (click)="load()">Charger la conversation</button>
+</div>
+
+<div class="messages">
+  <div *ngFor="let msg of messages" class="message">
+    <strong>{{ msg.expediteur?.username }} :</strong> {{ msg.contenu }}
+    <span class="date">{{ msg.date | date:'short' }}</span>
+  </div>
+</div>
+
+<hr />
+
+<div>
+  <textarea [(ngModel)]="contenu" placeholder="Écrire un message..."></textarea>
+  <button (click)="envoyer()">Envoyer</button>
+</div>

@@ -1,0 +1,25 @@
+<h2>Gestion des Réservations</h2>
+<p>Liste des réservations effectuées par les clients.</p>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Client</th>
+      <th>Trajet</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of reservations">
+      <td>{{ r.id }}</td>
+      <td>{{ r.client?.username }}</td>
+      <td>{{ r.trajet?.villeDepart }} → {{ r.trajet?.villeArrivee }}</td>
+      <td>{{ r.date | date:'short' }}</td>
+      <td>{{ r.status }}</td>
+    </tr>
+  </tbody>
+</table>
