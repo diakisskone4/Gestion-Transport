@@ -1,24 +1,50 @@
-<h2>Chat Administrateur</h2>
-<p>Discuter avec les clients.</p>
+<div class="chat-container">
 
-<hr />
-
-<div>
-  <label>ID du client :</label>
-  <input [(ngModel)]="userId" placeholder="Entrez l'ID du client" />
-  <button (click)="load()">Charger la conversation</button>
-</div>
-
-<div class="messages">
-  <div *ngFor="let msg of messages" class="message">
-    <strong>{{ msg.expediteur?.username }} :</strong> {{ msg.contenu }}
-    <span class="date">{{ msg.date | date:'short' }}</span>
+  <div class="chat-header">
+    <span>Chat Administrateur</span>
   </div>
-</div>
 
-<hr />
+  <!-- Sélection du client par NOM -->
+  <div style="padding:10px; background:#f0f0f0;">
+    <select
+      [(ngModel)]="selectedClientId"
+      (change)="load()"
+      style="width:100%; padding:8px;"
+    >
+      <option value="">— Sélectionner un client —</option>
+      <option *ngFor="let c of clients" [value]="c.id">
+        {{ c.username }}
+      </option>
+    </select>
+  </div>
 
-<div>
-  <textarea [(ngModel)]="contenu" placeholder="Écrire un message..."></textarea>
-  <button (click)="envoyer()">Envoyer</button>
+  <div class="chat-messages">
+    <div
+      *ngFor="let m of messages"
+      class="message"
+      [class.sent]="isSent(m)"
+      [class.received]="!isSent(m)"
+    >
+      <div class="bubble">
+        <strong>{{ m.expediteur?.username }}</strong><br>
+        {{ m.contenu }}
+        <div class="time">{{ m.date | date:'shortTime' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      [(ngModel)]="contenu"
+      placeholder="Message..."
+      [disabled]="!selectedClientId"
+    />
+    <button
+      (click)="envoyer()"
+      [disabled]="!selectedClientId"
+    >
+      ➤
+    </button>
+  </div>
+
 </div>

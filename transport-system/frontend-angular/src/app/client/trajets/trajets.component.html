@@ -1,9 +1,17 @@
 <h2>Trajets disponibles</h2>
 
-<div *ngFor="let t of trajets">
-  <b>{{ t.villeDepart }} → {{ t.villeArrivee }}</b><br>
-  Heure : {{ t.heureDepart }} <br>
-  Prix : {{ t.prix }} FCFA <br>
+<div *ngFor="let t of trajets" style="margin-bottom: 15px;">
+  <b>{{ t.departure }} → {{ t.destination }}</b><br>
+
+  Heure :
+  {{ t.departure_time | date:'short' }} <br>
+
+  Prix :
+  {{ t.price }} FCFA <br>
+
+  Véhicule :
+  {{ t.car?.number }} <br>
+
   <button (click)="reserver(t.id!)">Réserver</button>
   <hr>
 </div>

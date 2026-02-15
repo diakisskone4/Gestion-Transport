@@ -17,7 +17,7 @@
     <tr *ngFor="let p of paiements">
       <td>{{ p.id }}</td>
       <td>{{ p.reservation }}</td>
-      <td>{{ p.montant | currency:'EUR' }}</td>
+      <td>{{ p.montant | currency:'FCFA' }}</td>
       <td>{{ p.date_paiement | date:'short' }}</td>
       <td>{{ p.statut }}</td>
     </tr>

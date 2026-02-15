@@ -1,8 +1,30 @@
-<h2>Support</h2>
+<div class="chat-container">
 
-<div *ngFor="let m of messages">
-  {{ m.contenu }}
+  <div class="chat-header">
+    <span>Chat Client</span>
+  </div>
+
+  <div class="chat-messages">
+    <div
+      *ngFor="let m of messages"
+      class="message"
+      [class.sent]="isSent(m)"
+      [class.received]="!isSent(m)"
+    >
+      <div class="bubble">
+        {{ m.contenu }}
+        <div class="time">{{ m.date | date:'shortTime' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      [(ngModel)]="contenu"
+      placeholder="Écrire un message..."
+      (keyup.enter)="envoyer()"
+    />
+    <button (click)="envoyer()">➤</button>
+  </div>
+
 </div>
-
-<input [(ngModel)]="contenu">
-<button (click)="envoyer()">Envoyer</button>

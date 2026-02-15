@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReservationService } from '../../services/reservation.service';
 import { RouterModule } from '@angular/router';
+import { ReservationService, Reservation } from '../../services/reservation.service';
 
 @Component({
   standalone: true,
@@ -11,15 +11,18 @@ import { RouterModule } from '@angular/router';
 })
 export class AdminReservationsComponent implements OnInit {
 
-  reservations: any[] = [];
+  reservations: Reservation[] = [];
 
   constructor(private service: ReservationService) {}
 
   ngOnInit(): void {
-  this.service.getAll().subscribe({
-    next: (data) => this.reservations = data,
-    error: (err) => console.error('Erreur lors du chargement des réservations', err)
-  });
-}
-
+    this.service.getAll().subscribe({
+      next: (data: Reservation[]) => {
+        this.reservations = data;
+      },
+      error: (err: unknown) => {
+        console.error('Erreur lors du chargement des réservations', err);
+      }
+    });
+  }
 }

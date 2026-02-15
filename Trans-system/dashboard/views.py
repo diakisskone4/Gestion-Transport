@@ -1,21 +1,27 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from django.db.models import Sum
 
-from transports.models import Trip
-from reservations.models import Reservation
-from paiements.models import Paiement
-from transports.models import Trip
+from chat.models import Message
 
 
+class AdminDashboardView(APIView):
+    permission_classes = [IsAuthenticated]
 
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def admin_dashboard(request):
-    return Response({
-        "trajets": Trip.objects.count(),
-        "reservations": Reservation.objects.count(),
-        "paiements": Paiement.objects.count(),
-        "total_montant": Paiement.objects.aggregate(Sum('montant'))['montant__sum'] or 0,
-    })
+    def get(self, request):
+        user = request.user
+
+        if not user.is_staff:
+            raise PermissionDenied("Accès réservé à l’administrateur")
+
+        data = {
+            "trajets": 0,
+            "reservations": 0,
+            "paiements": 0,
+            "total_montant": 0,
+            "messages": Message.objects.count(),
+        }
+
+        return Response(data)

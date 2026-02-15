@@ -1,7 +1,6 @@
 export interface Reservation {
   id?: number;
-  userId?: number;
-  trajetId: number;
-  numeroPlace: number;
-  modifie: boolean;
+  trip: number;
+  seat_number: number;
+  created_at?: string;
 }

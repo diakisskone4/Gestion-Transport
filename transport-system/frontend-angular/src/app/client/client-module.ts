@@ -1,39 +1,54 @@
 import { Routes } from '@angular/router';
+import { ClientLayoutComponent } from '../core/layouts/client-layout/client-layout.component';
 
 export const CLIENT_ROUTES: Routes = [
-
   {
     path: '',
-    loadComponent: () =>
-      import('./dashboard/dashboard.component')
-        .then(m => m.ClientDashboardComponent)
-  },
+    component: ClientLayoutComponent,
+    children: [
 
-  {
-    path: 'trajets',
-    loadComponent: () =>
-      import('./trajets/trajets.component')
-        .then(m => m.ClientTrajetsComponent)
-  },
+      {
+        path: '',
+        loadComponent: () =>
+          import('./dashboard/dashboard.component')
+            .then(m => m.ClientDashboardComponent)
+      },
 
-  {
-    path: 'reservations',
-    loadComponent: () =>
-      import('./reservation/reservations.component')
-        .then(m => m.ClientReservationsComponent)
-  },
+      {
+        path: 'trajets',
+        loadComponent: () =>
+          import('./trajets/trajets.component')
+            .then(m => m.ClientTrajetsComponent)
+      },
 
-  {
-    path: 'ticket/:id',
-    loadComponent: () =>
-      import('./ticket/ticket.component')
-        .then(m => m.TicketComponent)
-  },
+      {
+        path: 'reservations',
+        loadComponent: () =>
+          import('./reservation/reservations.component')
+            .then(m => m.ClientReservationsComponent)
+      },
 
-  {
-    path: 'chat',
-    loadComponent: () =>
-      import('./chat/chat.component')
-        .then(m => m.ClientChatComponent)
+      {
+        path: 'ticket/:id',
+        loadComponent: () =>
+          import('./ticket/ticket.component')
+            .then(m => m.TicketComponent)
+      },
+
+      {
+        path: 'paiement/:id',
+        loadComponent: () =>
+          import('./paiements/paiements.component')
+            .then(m => m.ClientPaiementsComponent)
+      },
+
+      {
+        path: 'chat',
+        loadComponent: () =>
+          import('./chat/chat.component')
+            .then(m => m.ClientChatComponent)
+      }
+
+    ]
   }
 ];

@@ -5,16 +5,29 @@
 
 <form (ngSubmit)="submit()" style="margin-bottom: 20px;">
   <label>Ville de départ :</label>
-  <input [(ngModel)]="form.villeDepart" name="villeDepart" required />
+  <input [(ngModel)]="form.departure" name="departure" required />
 
   <label>Ville d’arrivée :</label>
-  <input [(ngModel)]="form.villeArrivee" name="villeArrivee" required />
+  <input [(ngModel)]="form.destination" name="destination" required />
 
   <label>Heure de départ :</label>
-  <input [(ngModel)]="form.heureDepart" name="heureDepart" required />
+  <input
+    type="datetime-local"
+    [(ngModel)]="form.departure_time"
+    name="departure_time"
+    required
+  />
 
   <label>Prix :</label>
-  <input type="number" [(ngModel)]="form.prix" name="prix" required />
+  <input type="number" [(ngModel)]="form.price" name="price" required />
+
+  <label>Véhicule :</label>
+  <select [(ngModel)]="form.car_id" name="car_id" required>
+    <option [ngValue]="0">-- Sélectionner un véhicule --</option>
+    <option *ngFor="let c of cars" [ngValue]="c.id">
+      {{ c.number }} ({{ c.seats }} places)
+  </option>
+  </select>
 
   <button type="submit">{{ isEdit ? 'Mettre à jour' : 'Ajouter' }}</button>
   <button type="button" (click)="reset()">Annuler</button>
@@ -28,16 +41,18 @@
       <th>Arrivée</th>
       <th>Heure</th>
       <th>Prix</th>
+      <th>Véhicule</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let t of trajets">
       <td>{{ t.id }}</td>
-      <td>{{ t.villeDepart }}</td>
-      <td>{{ t.villeArrivee }}</td>
-      <td>{{ t.heureDepart }}</td>
-      <td>{{ t.prix | currency:'EUR' }}</td>
+      <td>{{ t.departure }}</td>
+      <td>{{ t.destination }}</td>
+      <td>{{ t.departure_time | date:'short' }}</td>
+      <td>{{ t.price | currency:'FCFA' }}</td>
+      <td>{{ t.car?.number }}</td>
       <td>
         <button (click)="edit(t)">Modifier</button>
         <button (click)="delete(t.id)">Supprimer</button>

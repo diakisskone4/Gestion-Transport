@@ -21,7 +21,9 @@ export class PaiementService {
   }
 
   getByReservation(reservationId: number): Observable<Paiement> {
-    return this.http.get<Paiement>(`${this.apiUrl}/reservation/${reservationId}/`);
+    return this.http.get<Paiement>(
+      `${this.apiUrl}/reservation/${reservationId}/`
+    );
   }
 
   getAll(): Observable<Paiement[]> {

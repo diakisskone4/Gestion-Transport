@@ -18,7 +18,11 @@ urlpatterns = [
     # API APPS
     # ======================
     path('api/admin/', include('dashboard.urls')),
-    path('api/trajets/', include('transports.urls')),
+    path('api/', include('transports.urls')),
     path('api/reservations/', include('reservations.urls')),
     path('api/paiements/', include('paiements.urls')),
+    path('api/messages/', include('chat.urls')),
+    path('api/admin/', include('dashboard.urls')),
+
+
 ]

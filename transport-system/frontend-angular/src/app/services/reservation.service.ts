@@ -1,38 +1,76 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Définis un modèle pour tes réservations
-export interface Reservation {
+/* =========================
+   MODELES
+========================= */
+
+export interface Trip {
   id: number;
-  numeroPlace: number;
-  // ajoute les autres champs nécessaires
+  departure: string;
+  destination: string;
+  departure_time: string;
+  price: number;
 }
 
-@Injectable({ providedIn: 'root' })
+export interface Reservation {
+  id?: number;
+  seat_number: number;
+  created_at?: string;
+  trip: Trip;   // trajet complet
+}
+
+/* =========================
+   SERVICE
+========================= */
+
+@Injectable({
+  providedIn: 'root'
+})
 export class ReservationService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api/reservations/';
+  private baseUrl = 'http://127.0.0.1:8000/api/reservations';
 
   constructor(private http: HttpClient) {}
 
-  // Récupérer toutes les réservations
+  // 🔐 HEADERS JWT
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('access_token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
+  // =========================
+  // ADMIN : toutes les réservations
+  // =========================
   getAll(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(this.apiUrl);
+    return this.http.get<Reservation[]>(`${this.baseUrl}/`, {
+      headers: this.getHeaders()
+    });
   }
 
-  // Réserver un trajet
-  reserver(trajetId: number): Observable<any> {
-    return this.http.post(this.apiUrl, { trajetId });
+  // =========================
+  // CLIENT : mes réservations
+  // =========================
+  getMesReservations(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/mes/`, {
+      headers: this.getHeaders()
+    });
   }
 
-  // Mes réservations personnelles
-  mesReservations(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.apiUrl}/me`);
-  }
-
-  // Modifier une réservation
-  modifierUneFois(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data);
+  // =========================
+  // CLIENT : réserver un trajet
+  // =========================
+  reserver(tripId: number): Observable<Reservation> {
+    return this.http.post<Reservation>(
+      `${this.baseUrl}/create/`,   // ✅ ENDPOINT CORRECT
+      {
+        trip_id: tripId,           // ✅ NOM ATTENDU PAR LE SERIALIZER
+        seat_number: 1
+      },
+      { headers: this.getHeaders() }
+    );
   }
 }

@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../services/chat.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
   selector: 'app-client-chat',
   imports: [CommonModule, FormsModule],
-  templateUrl: './chat.component.html'
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.css']
 })
 export class ClientChatComponent implements OnInit {
 
@@ -15,7 +17,13 @@ export class ClientChatComponent implements OnInit {
   contenu = '';
   adminId = 1;
 
-  constructor(private chat: ChatService) {}
+  // utilisateur connecté via signal
+  myId = computed(() => this.auth.user()?.user.id);
+
+  constructor(
+    private chat: ChatService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.load();
@@ -27,10 +35,18 @@ export class ClientChatComponent implements OnInit {
   }
 
   envoyer() {
-    this.chat.envoyer({ contenu: this.contenu, destinataireId: this.adminId })
-      .subscribe(() => {
-        this.contenu = '';
-        this.load();
-      });
+    if (!this.contenu.trim()) return;
+
+    this.chat.envoyer({
+      contenu: this.contenu,
+      destinataireId: this.adminId
+    }).subscribe(() => {
+      this.contenu = '';
+      this.load();
+    });
+  }
+
+  isSent(m: any): boolean {
+    return m.expediteur?.id === this.myId();
   }
 }

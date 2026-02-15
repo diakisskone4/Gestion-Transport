@@ -5,16 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { PaiementService } from '../../services/paiement.service';
 import { Paiement } from '../../models/paiement.model';
 
-
-
-
 @Component({
   selector: 'app-client-paiements',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './paiements.component.html'
 })
 export class ClientPaiementsComponent implements OnInit {
@@ -36,14 +30,14 @@ export class ClientPaiementsComponent implements OnInit {
 
   loadPaiement(): void {
     this.paiementService.getByReservation(this.reservationId).subscribe({
-      next: (data: Paiement) => this.paiement = data,
+      next: (data) => this.paiement = data,
       error: () => this.paiement = undefined
     });
   }
 
   payer(): void {
     this.paiementService.payer(this.reservationId, this.montant).subscribe({
-      next: (data: Paiement) => {
+      next: (data) => {
         this.paiement = data;
         this.message = 'Paiement effectué avec succès ✅';
       },
