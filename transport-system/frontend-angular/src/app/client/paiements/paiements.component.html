@@ -1,20 +1,55 @@
-<h2>Paiements</h2>
+<h2>Paiement</h2>
 
-<div *ngIf="paiement; else paiementForm">
+<!-- ✅ Message global -->
+<p *ngIf="message" class="alert alert-info">
+  {{ message }}
+</p>
+
+<!-- ✅ Paiement déjà effectué -->
+<div *ngIf="paiement; else paiementAEffectuer">
   <p><strong>ID :</strong> {{ paiement.id }}</p>
-  <p><strong>Réservation :</strong> {{ paiement.reservation }}</p>
   <p><strong>Montant :</strong> {{ paiement.montant }} FCFA</p>
   <p><strong>Statut :</strong> {{ paiement.statut }}</p>
-  <p *ngIf="paiement.date_paiement"><strong>Date :</strong> {{ paiement.date_paiement | date:'short' }}</p>
+  <p *ngIf="paiement.date_paiement">
+    <strong>Date :</strong> {{ paiement.date_paiement | date:'short' }}
+  </p>
 </div>
 
-<ng-template #paiementForm>
-  <input
-    type="number"
-    [(ngModel)]="montant"
-    placeholder="Montant"
-  >
-  <button (click)="payer()">Payer</button>
+<!-- 🔄 Paiement à effectuer -->
+<ng-template #paiementAEffectuer>
+  <div *ngIf="reservation; else chargement">
+    <p>
+      <strong>Trajet :</strong>
+      {{ reservation.trip.departure }} → {{ reservation.trip.destination }}
+    </p>
+
+    <p>
+      <strong>Prix unitaire :</strong>
+      {{ reservation.trip.price }} FCFA
+    </p>
+
+    <p>
+      <strong>Nombre de places :</strong>
+      {{ reservation.seat_number }}
+    </p>
+
+    <p>
+      <strong>Montant total :</strong>
+      <b>{{ montant }} FCFA</b>
+    </p>
+
+    <!-- ✅ Bouton sécurisé -->
+    <button
+      (click)="payer()"
+      class="btn btn-success"
+      [disabled]="loading"
+    >
+      {{ loading ? 'Paiement en cours...' : 'Payer' }}
+    </button>
+  </div>
 </ng-template>
 
-<p>{{ message }}</p>
+<!-- ⏳ Chargement -->
+<ng-template #chargement>
+  <p>Chargement des données...</p>
+</ng-template>

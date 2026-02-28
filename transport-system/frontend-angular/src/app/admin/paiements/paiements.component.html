@@ -3,8 +3,22 @@
 
 <hr />
 
-<table>
-  <thead>
+<!-- ⏳ Chargement -->
+<p *ngIf="loading" class="text-muted">
+  Chargement des paiements...
+</p>
+
+<!-- ℹ️ Message -->
+<p *ngIf="message && !loading" class="alert alert-info">
+  {{ message }}
+</p>
+
+<!-- 📊 Tableau des paiements -->
+<table
+  class="table table-bordered table-striped"
+  *ngIf="!loading && paiements.length > 0"
+>
+  <thead class="table-dark">
     <tr>
       <th>ID</th>
       <th>Réservation</th>
@@ -13,13 +27,26 @@
       <th>Statut</th>
     </tr>
   </thead>
+
   <tbody>
-    <tr *ngFor="let p of paiements">
+    <tr *ngFor="let p of paiements; trackBy: trackById">
       <td>{{ p.id }}</td>
-      <td>{{ p.reservation }}</td>
-      <td>{{ p.montant | currency:'FCFA' }}</td>
+      <td>Réservation #{{ p.reservation }}</td>
+      <td>{{ p.montant }} FCFA</td>
       <td>{{ p.date_paiement | date:'short' }}</td>
-      <td>{{ p.statut }}</td>
+      <td>
+        <span class="badge bg-success" *ngIf="p.statut === 'PAYE'">
+          PAYÉ
+        </span>
+        <span class="badge bg-secondary" *ngIf="p.statut !== 'PAYE'">
+          {{ p.statut }}
+        </span>
+      </td>
     </tr>
   </tbody>
 </table>
+
+<!-- 🚫 Aucun paiement -->
+<p *ngIf="!loading && paiements.length === 0 && !message" class="text-muted">
+  Aucun paiement enregistré.
+</p>

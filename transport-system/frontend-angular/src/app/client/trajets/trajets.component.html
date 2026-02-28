@@ -12,6 +12,10 @@
   Véhicule :
   {{ t.car?.number }} <br>
 
-  <button (click)="reserver(t.id!)">Réserver</button>
+  <!-- ✅ redirection vers la page réservation -->
+  <button (click)="allerAReservation(t.id!)">
+    Réserver
+  </button>
+
   <hr>
 </div>

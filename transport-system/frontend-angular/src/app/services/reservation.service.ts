@@ -18,7 +18,7 @@ export interface Reservation {
   id?: number;
   seat_number: number;
   created_at?: string;
-  trip: Trip;   // trajet complet
+  trip: Trip;
 }
 
 /* =========================
@@ -30,7 +30,7 @@ export interface Reservation {
 })
 export class ReservationService {
 
-  private baseUrl = 'http://127.0.0.1:8000/api/reservations';
+  private baseUrl = 'http://127.0.0.1:8000/api/reservations/';
 
   constructor(private http: HttpClient) {}
 
@@ -46,30 +46,42 @@ export class ReservationService {
   // ADMIN : toutes les réservations
   // =========================
   getAll(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.baseUrl}/`, {
-      headers: this.getHeaders()
-    });
+    return this.http.get<Reservation[]>(
+      this.baseUrl,
+      { headers: this.getHeaders() }
+    );
   }
 
   // =========================
   // CLIENT : mes réservations
   // =========================
   getMesReservations(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.baseUrl}/mes/`, {
-      headers: this.getHeaders()
-    });
+    return this.http.get<Reservation[]>(
+      `${this.baseUrl}mes/`,
+      { headers: this.getHeaders() }
+    );
   }
 
   // =========================
   // CLIENT : réserver un trajet
   // =========================
-  reserver(tripId: number): Observable<Reservation> {
+  reserver(tripId: number, seatNumber: number = 1): Observable<Reservation> {
     return this.http.post<Reservation>(
-      `${this.baseUrl}/create/`,   // ✅ ENDPOINT CORRECT
+      `${this.baseUrl}create/`,
       {
-        trip_id: tripId,           // ✅ NOM ATTENDU PAR LE SERIALIZER
-        seat_number: 1
+        trip_id: tripId,
+        seat_number: seatNumber
       },
+      { headers: this.getHeaders() }
+    );
+  }
+
+  // =========================
+  // CLIENT : une réservation par ID (OBLIGATOIRE)
+  // =========================
+  getById(id: number): Observable<Reservation> {
+    return this.http.get<Reservation>(
+      `${this.baseUrl}${id}/`,
       { headers: this.getHeaders() }
     );
   }

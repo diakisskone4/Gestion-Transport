@@ -1,13 +1,17 @@
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Reservation
 from .serializers import ReservationSerializer
+
 
 # ======================
 # ADMIN : toutes les réservations
 # ======================
 class ReservationListAdminView(ListAPIView):
-    queryset = Reservation.objects.select_related('user', 'trip').all()
+    queryset = Reservation.objects.select_related(
+        'user',
+        'trip'
+    )
     serializer_class = ReservationSerializer
     permission_classes = [IsAdminUser]
 
@@ -20,7 +24,9 @@ class MesReservationsView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Reservation.objects.filter(user=self.request.user)
+        return Reservation.objects.select_related(
+            'trip'
+        ).filter(user=self.request.user)
 
 
 # ======================
@@ -32,3 +38,16 @@ class ReservationCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+# ======================
+# CLIENT : détail d'une réservation (OBLIGATOIRE)
+# ======================
+class ReservationDetailView(RetrieveAPIView):
+    serializer_class = ReservationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Reservation.objects.select_related(
+            'trip'
+        ).filter(user=self.request.user)

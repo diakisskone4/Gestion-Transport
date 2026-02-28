@@ -1,8 +1,26 @@
 from django.urls import path
-from .views import PaiementListCreateView, PaiementByReservationView
+from .views import (
+    PaiementListCreateView,
+    PaiementByReservationView,
+    AdminPaiementListView
+)
 
 urlpatterns = [
-    path('', PaiementListCreateView.as_view(), name='paiement-list'),
+    # CLIENT
+    path(
+        '',
+        PaiementListCreateView.as_view(),
+        name='paiement-client'
+    ),
+
+    # ADMIN
+    path(
+        'admin/',
+        AdminPaiementListView.as_view(),
+        name='paiement-admin'
+    ),
+
+    # CLIENT : par réservation
     path(
         'reservation/<int:reservation_id>/',
         PaiementByReservationView.as_view(),

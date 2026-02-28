@@ -21,8 +21,9 @@ export const CLIENT_ROUTES: Routes = [
             .then(m => m.ClientTrajetsComponent)
       },
 
+      // ✅ CORRECTION ICI
       {
-        path: 'reservations',
+        path: 'reservations/:id',
         loadComponent: () =>
           import('./reservation/reservations.component')
             .then(m => m.ClientReservationsComponent)
