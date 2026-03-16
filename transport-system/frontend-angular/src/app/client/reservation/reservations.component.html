@@ -1,47 +1,124 @@
-<h2>Nouvelle réservation</h2>
-
-<div class="card p-3 mb-4">
-  <div class="form-group">
-    <label>Nombre de places</label>
-    <input
-      type="number"
-      class="form-control"
-      min="1"
-      [(ngModel)]="seatNumber"
-    />
+<div class="dashboard-scroll">
+  <!-- En-tête -->
+  <div class="header-section">
+    <h2>
+      <i class="bi bi-ticket-perforated"></i>
+      Nouvelle réservation
+    </h2>
+    <p>
+      <i class="bi bi-info-circle"></i>
+      Réservez vos places pour votre prochain trajet
+    </p>
   </div>
 
-  <button
-    class="btn btn-primary mt-2"
-    (click)="reserver()">
-    Réserver
-  </button>
+  <!-- Carte de réservation -->
+  <div class="reservation-card">
+    <h2>
+      <i class="bi bi-pencil-square"></i>
+      Détails de la réservation
+    </h2>
+
+    <div class="form-group">
+      <label>
+        <i class="bi bi-people"></i>
+        Nombre de places
+      </label>
+      <input
+        type="number"
+        class="form-control"
+        min="1"
+        max="10"
+        [(ngModel)]="seatNumber"
+        placeholder="Ex: 2"
+      />
+      <small class="text-muted">Maximum 10 places par réservation</small>
+    </div>
+
+    <button
+      class="btn-reserver"
+      (click)="reserver()"
+      [disabled]="seatNumber < 1"
+    >
+      <i class="bi bi-check-circle"></i>
+      Confirmer la réservation
+    </button>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- Message de succès/erreur -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="bi bi-check-circle-fill"></i>
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Liste des réservations -->
+  <div class="table-container">
+    <div class="table-header">
+      <h2>
+        <i class="bi bi-list-check"></i>
+        Mes réservations
+      </h2>
+      <span class="badge">{{ reservations.length }} réservation(s)</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Trajet</th>
+            <th>Nombre de places</th>
+            <th>Date de réservation</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of reservations; let i = index">
+            <td>#{{ r.id }}</td>
+            <td>
+              <span class="trajet-route">
+                <i class="bi bi-arrow-right"></i>
+                {{ r.trip?.departure || 'N/A' }} → {{ r.trip?.destination || 'N/A' }}
+              </span>
+            </td>
+            <td>
+              <span class="seat-badge">
+                <i class="bi bi-chair"></i>
+                {{ r.seat_number }} place(s)
+              </span>
+            </td>
+            <td>
+              <span class="date-badge">
+                <i class="bi bi-calendar"></i>
+                {{ r.created_at | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </td>
+            <td>
+              <button
+                class="btn-payer"
+                (click)="payer(r.id)"
+                title="Payer cette réservation"
+              >
+                <i class="bi bi-cash-stack"></i>
+                Payer
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="reservations.length === 0">
+            <td colspan="5" class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <p>Aucune réservation trouvée</p>
+              <small>Commencez par réserver un trajet</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-
-<hr />
-
-<h2>Mes réservations et la liste de réservation faite</h2>
-
-<table border="1" width="100%">
-  <tr>
-    <th>ID</th>
-    <th>Trajet</th>
-    <th>Nombre de places</th>
-    <th>Date</th>
-    <th>Action</th>
-  </tr>
-
-  <tr *ngFor="let r of reservations">
-    <td>{{ r.id }}</td>
-    <td>{{ r.trip.departure }} → {{ r.trip.destination }}</td>
-    <td>{{ r.seat_number }}</td>
-    <td>{{ r.created_at | date:'short' }}</td>
-    <td>
-      <button
-        class="btn btn-success"
-        (click)="payer(r.id)">
-        Payer
-      </button>
-    </td>
-  </tr>
-</table>

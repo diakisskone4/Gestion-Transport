@@ -1,55 +1,66 @@
-<style>
-  .layout {
-    display: flex;
-    min-height: 100vh;
-  }
-
-  aside {
-    width: 220px;
-    background: #0d6efd;
-    color: #fff;
-    padding: 20px;
-  }
-
-  aside h3 {
-    margin-top: 0;
-    font-size: 18px;
-  }
-
-  aside a {
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    margin: 10px 0;
-  }
-
-  aside a:hover {
-    text-decoration: underline;
-  }
-
-  main {
-    flex: 1;
-    padding: 20px;
-    background: #f4f6f8;
-  }
-</style>
-
 <div class="layout">
+  <!-- BOUTON TOGGLE SIDEBAR (optionnel) -->
+  <div 
+    class="sidebar-toggle" 
+    [class.collapsed]="isSidebarCollapsed"
+    (click)="toggleSidebar()"
+    *ngIf="showToggle"
+    title="Toggle menu"
+  >
+    <i class="bi bi-chevron-left"></i>
+  </div>
 
   <!-- MENU CLIENT -->
-  <aside>
-    <h3>Client</h3>
+  <aside [class.collapsed]="isSidebarCollapsed">
+    <h3>
+      <i class="bi bi-person-circle"></i>
+      <span *ngIf="!isSidebarCollapsed">Espace Client</span>
+    </h3>
 
-    <a routerLink="/client">Dashboard</a>
-    <a routerLink="/client/trajets">Trajets</a>
-    <a routerLink="/client/reservations">Mes réservations</a>
-    <a routerLink="/client/chat">Messages</a>
-    <a routerLink="/login">Déconnexion</a>
+    <a 
+      routerLink="/client" 
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >
+      <i class="bi bi-speedometer2"></i>
+      <span *ngIf="!isSidebarCollapsed">Dashboard</span>
+    </a>
+
+    <a 
+      routerLink="/client/trajets" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-bus-front"></i>
+      <span *ngIf="!isSidebarCollapsed">Trajets disponibles</span>
+    </a>
+
+    <a 
+      routerLink="/client/reservations" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-ticket-perforated"></i>
+      <span *ngIf="!isSidebarCollapsed">Mes réservations</span>
+    </a>
+
+    <a 
+      routerLink="/client/chat" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-chat-dots"></i>
+      <span *ngIf="!isSidebarCollapsed">Messages</span>
+    </a>
+
+    <a 
+      routerLink="/login" 
+      (click)="logout()"
+    >
+      <i class="bi bi-box-arrow-right"></i>
+      <span *ngIf="!isSidebarCollapsed">Déconnexion</span>
+    </a>
   </aside>
 
-  <!-- CONTENU -->
+  <!-- CONTENU PRINCIPAL -->
   <main>
     <router-outlet></router-outlet>
   </main>
-
 </div>

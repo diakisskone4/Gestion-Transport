@@ -1,55 +1,140 @@
-<h2>Paiement</h2>
-
-<!-- ✅ Message global -->
-<p *ngIf="message" class="alert alert-info">
-  {{ message }}
-</p>
-
-<!-- ✅ Paiement déjà effectué -->
-<div *ngIf="paiement; else paiementAEffectuer">
-  <p><strong>ID :</strong> {{ paiement.id }}</p>
-  <p><strong>Montant :</strong> {{ paiement.montant }} FCFA</p>
-  <p><strong>Statut :</strong> {{ paiement.statut }}</p>
-  <p *ngIf="paiement.date_paiement">
-    <strong>Date :</strong> {{ paiement.date_paiement | date:'short' }}
-  </p>
-</div>
-
-<!-- 🔄 Paiement à effectuer -->
-<ng-template #paiementAEffectuer>
-  <div *ngIf="reservation; else chargement">
+<div class="paiement-container">
+  <!-- En-tête -->
+  <div class="header-section">
+    <h2>
+      <i class="bi bi-credit-card"></i>
+      Paiement
+    </h2>
     <p>
-      <strong>Trajet :</strong>
-      {{ reservation.trip.departure }} → {{ reservation.trip.destination }}
+      <i class="bi bi-shield-check"></i>
+      Paiement sécurisé
     </p>
-
-    <p>
-      <strong>Prix unitaire :</strong>
-      {{ reservation.trip.price }} FCFA
-    </p>
-
-    <p>
-      <strong>Nombre de places :</strong>
-      {{ reservation.seat_number }}
-    </p>
-
-    <p>
-      <strong>Montant total :</strong>
-      <b>{{ montant }} FCFA</b>
-    </p>
-
-    <!-- ✅ Bouton sécurisé -->
-    <button
-      (click)="payer()"
-      class="btn btn-success"
-      [disabled]="loading"
-    >
-      {{ loading ? 'Paiement en cours...' : 'Payer' }}
-    </button>
   </div>
-</ng-template>
 
-<!-- ⏳ Chargement -->
-<ng-template #chargement>
-  <p>Chargement des données...</p>
-</ng-template>
+  <!-- Message global -->
+  <div *ngIf="message" class="alert" [class.alert-info]="!message.includes('succès') && !message.includes('Erreur')" 
+       [class.alert-success]="message.includes('succès')"
+       [class.alert-danger]="message.includes('Erreur') || message.includes('invalide') || message.includes('introuvable')">
+    <i class="bi" [class.bi-info-circle]="!message.includes('succès') && !message.includes('Erreur')"
+       [class.bi-check-circle]="message.includes('succès')"
+       [class.bi-exclamation-triangle]="message.includes('Erreur')"></i>
+    {{ message }}
+  </div>
+
+  <!-- Paiement déjà effectué -->
+  <div class="paiement-card" *ngIf="paiement">
+    <div class="card-header">
+      <i class="bi bi-check-circle-fill"></i>
+      <div>
+        <h3>Paiement confirmé</h3>
+        <p>Votre transaction a été traitée avec succès</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="paiement-details">
+        <div class="paiement-row">
+          <span class="paiement-label">ID Transaction</span>
+          <span class="paiement-value">#{{ paiement.id }}</span>
+        </div>
+        <div class="paiement-row">
+          <span class="paiement-label">Montant</span>
+          <span class="paiement-value price">{{ paiement.montant | number }} FCFA</span>
+        </div>
+        <div class="paiement-row">
+          <span class="paiement-label">Statut</span>
+          <span class="paiement-value status">
+            <i class="bi bi-check-circle-fill"></i>
+            {{ paiement.statut }}
+          </span>
+        </div>
+        <div class="paiement-row" *ngIf="paiement.date_paiement">
+          <span class="paiement-label">Date</span>
+          <span class="paiement-value">{{ paiement.date_paiement | date:'dd MMMM yyyy HH:mm' }}</span>
+        </div>
+      </div>
+
+      <div class="status-badge success">
+        <i class="bi bi-check-circle-fill"></i>
+        Paiement validé
+      </div>
+    </div>
+  </div>
+
+  <!-- Paiement à effectuer -->
+  <div class="paiement-card" *ngIf="!paiement && reservation">
+    <div class="card-header">
+      <i class="bi bi-cash-stack"></i>
+      <div>
+        <h3>Détails du paiement</h3>
+        <p>Réservation #{{ reservationId }}</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- Informations réservation -->
+      <div class="info-group">
+        <div class="info-row">
+          <i class="bi bi-bus-front"></i>
+          <div class="info-content">
+            <span class="info-label">Trajet</span>
+            <span class="info-value">{{ reservation.trip.departure }} → {{ reservation.trip.destination }}</span>
+          </div>
+        </div>
+
+        <div class="trajet-info">
+          <div class="trajet-ville">
+            <span>Départ</span>
+            <strong>{{ reservation.trip.departure }}</strong>
+          </div>
+          <i class="bi bi-arrow-right trajet-arrow"></i>
+          <div class="trajet-ville">
+            <span>Arrivée</span>
+            <strong>{{ reservation.trip.destination }}</strong>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <i class="bi bi-cash"></i>
+          <div class="info-content">
+            <span class="info-label">Prix unitaire</span>
+            <span class="info-value">{{ reservation.trip.price | number }} FCFA</span>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <i class="bi bi-people"></i>
+          <div class="info-content">
+            <span class="info-label">Nombre de places</span>
+            <span class="info-value">{{ reservation.seat_number }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Montant total -->
+      <div class="total-section">
+        <span class="total-label">Total à payer</span>
+        <span class="total-value">{{ montant | number }} FCFA</span>
+      </div>
+
+      <!-- Bouton de paiement -->
+      <button class="btn-payer" (click)="payer()" [disabled]="loading">
+        <i class="bi" [class.bi-credit-card]="!loading" [class.bi-arrow-repeat]="loading"></i>
+        {{ loading ? 'Paiement en cours...' : 'Payer maintenant' }}
+      </button>
+
+      <small style="display: block; text-align: center; margin-top: 1rem; color: #64748b;">
+        <i class="bi bi-lock"></i>
+        Paiement 100% sécurisé
+      </small>
+    </div>
+  </div>
+
+  <!-- Chargement -->
+  <ng-template #chargement>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Chargement des données...</p>
+    </div>
+  </ng-template>
+</div>

@@ -9,7 +9,8 @@ import { Paiement } from '../../models/paiement.model';
   selector: 'app-client-paiements',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './paiements.component.html'
+  templateUrl: './paiements.component.html',
+  styleUrls: ['./paiements.component.css']
 })
 export class ClientPaiementsComponent implements OnInit {
 
@@ -19,7 +20,7 @@ export class ClientPaiementsComponent implements OnInit {
 
   montant = 0;          // affichage uniquement
   message = '';
-  loading = false;      // 🔑 anti double clic / UX
+  loading = false;      //  anti double clic / UX
 
   constructor(
     private paiementService: PaiementService,
@@ -32,7 +33,7 @@ export class ClientPaiementsComponent implements OnInit {
     this.reservationId = idParam ? Number(idParam) : 0;
 
     if (!this.reservationId) {
-      this.message = 'ID de réservation invalide ❌';
+      this.message = 'ID de réservation invalide ';
       return;
     }
 
@@ -48,7 +49,7 @@ export class ClientPaiementsComponent implements OnInit {
         this.montant = res.seat_number * res.trip.price;
       },
       error: () => {
-        this.message = 'Réservation introuvable ❌';
+        this.message = 'Réservation introuvable ';
       }
     });
   }
@@ -62,7 +63,7 @@ export class ClientPaiementsComponent implements OnInit {
           this.paiement = undefined; // pas encore payé
         } else {
           console.error(err);
-          this.message = 'Erreur lors de la vérification du paiement ❌';
+          this.message = 'Erreur lors de la vérification du paiement ';
         }
       }
     });
@@ -78,7 +79,7 @@ export class ClientPaiementsComponent implements OnInit {
   this.paiementService.payer(this.reservationId).subscribe({
     next: (data) => {
       this.paiement = data;
-      this.message = 'Paiement effectué avec succès ✅';
+      this.message = 'Paiement effectué avec succès ';
       this.loading = false;
     },
     error: (err) => {

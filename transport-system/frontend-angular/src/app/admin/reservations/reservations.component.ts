@@ -33,4 +33,19 @@ export class AdminReservationsComponent implements OnInit {
       }
     });
   }
+
+  // ✅ Méthode sécurisée pour obtenir le départ
+  getTripDeparture(reservation: Reservation): string {
+    return reservation.trip?.departure || 'N/A';
+  }
+
+  // ✅ Méthode sécurisée pour obtenir la destination
+  getTripDestination(reservation: Reservation): string {
+    return reservation.trip?.destination || 'N/A';
+  }
+
+  // ✅ Méthode pour vérifier si le trajet existe
+  hasTrip(reservation: Reservation): boolean {
+    return !!reservation.trip;
+  }
 }
