@@ -12,10 +12,8 @@ import { Paiement } from '../../models/paiement.model';
   styleUrls: ['./paiements.component.css']
 })
 export class AdminPaiementsComponent implements OnInit {
-
   paiements: Paiement[] = [];
   message = '';
-  loading = false;
 
   constructor(private paiementService: PaiementService) {}
 
@@ -24,30 +22,33 @@ export class AdminPaiementsComponent implements OnInit {
   }
 
   loadPaiements(): void {
-  this.loading = true;
-  this.message = '';
+    this.message = '';
 
-  this.paiementService.getAllAdmin().subscribe({
-    next: (data) => {
-      this.paiements = data;
-      this.loading = false;
-
-      if (data.length === 0) {
-        this.message = 'Aucun paiement enregistré.';
-      }
-    },
-    error: (err) => {
-      console.error(err);
-      this.message =
-        err.status === 401
+    this.paiementService.getAllAdmin().subscribe({
+      next: (data) => {
+        this.paiements = data;
+        if (data.length === 0) {
+          this.message = 'Aucun paiement enregistré.';
+        }
+      },
+      error: (err) => {
+        console.error('Erreur chargement paiements:', err);
+        this.message = err.status === 401
           ? 'Accès non autorisé ❌'
           : 'Erreur lors du chargement des paiements ❌';
-      this.loading = false;
-    }
-  });
-}
+        this.paiements = [];
+      }
+    });
+  }
 
-  // 🔑 Optimisation Angular (*ngFor)
+  getTotalMontant(): number {
+    return this.paiements.reduce((total, p) => total + (p.montant || 0), 0);
+  }
+
+  getPaiementsPayes(): number {
+    return this.paiements.filter(p => p.statut === 'PAYE').length;
+  }
+
   trackById(index: number, item: Paiement): number {
     return item.id ?? index;
   }

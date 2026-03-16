@@ -1,58 +1,75 @@
-<style>
-  .layout {
-    display: flex;
-    min-height: 100vh;
-  }
-
-  aside {
-    width: 240px;
-    background: #212529;
-    color: #fff;
-    padding: 20px;
-  }
-
-  aside h3 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #0d6efd;
-  }
-
-  aside a {
-    display: block;
-    color: #ddd;
-    text-decoration: none;
-    margin: 12px 0;
-  }
-
-  aside a:hover {
-    color: #fff;
-    font-weight: bold;
-  }
-
-  main {
-    flex: 1;
-    padding: 20px;
-    background: #f4f6f8;
-  }
-</style>
-
 <div class="layout">
+  <!-- BOUTON TOGGLE SIDEBAR -->
+  <div 
+    class="sidebar-toggle" 
+    [class.collapsed]="isSidebarCollapsed"
+    (click)="toggleSidebar()"
+    title="Toggle menu"
+  >
+    <i class="bi bi-chevron-left"></i>
+  </div>
 
   <!-- MENU ADMIN -->
-  <aside>
-    <h3>Administrateur</h3>
+  <aside [class.collapsed]="isSidebarCollapsed">
+    <h3>
+      <span *ngIf="!isSidebarCollapsed">G-TRANSPORT</span>
+      <i *ngIf="isSidebarCollapsed" class="bi bi-person-circle"></i>
+    </h3>
 
-    <a routerLink="/admin">Dashboard</a>
-    <a routerLink="/admin/trajets">Trajets</a>
-    <a routerLink="/admin/reservations">Réservations</a>
-    <a routerLink="/admin/paiements">Paiements</a>
-    <a routerLink="/admin/chat">Messages</a>
-    <a routerLink="/login">Déconnexion</a>
+    <a 
+      routerLink="/admin" 
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >
+      <i class="bi bi-speedometer2"></i>
+      <span *ngIf="!isSidebarCollapsed">Dashboard</span>
+    </a>
+
+    <a 
+      routerLink="/admin/trajets" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-bus-front"></i>
+      <span *ngIf="!isSidebarCollapsed">Trajets</span>
+    </a>
+
+    <a 
+      routerLink="/admin/reservations" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-ticket-perforated"></i>
+      <span *ngIf="!isSidebarCollapsed">Réservations</span>
+      
+    </a>
+
+    <a 
+      routerLink="/admin/paiements" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-credit-card"></i>
+      <span *ngIf="!isSidebarCollapsed">Paiements</span>
+    </a>
+
+    <a 
+      routerLink="/admin/chat" 
+      routerLinkActive="active"
+    >
+      <i class="bi bi-chat-dots"></i>
+      <span *ngIf="!isSidebarCollapsed">Messages</span>
+      
+    </a>
+
+    <a 
+      routerLink="/auth/login" 
+      (click)="logout()"
+    >
+      <i class="bi bi-box-arrow-right"></i>
+      <span *ngIf="!isSidebarCollapsed">Déconnexion</span>
+    </a>
   </aside>
 
   <!-- CONTENU -->
-  <main>
+  <main [style.margin-left]="isSidebarCollapsed ? '80px' : '280px'" [style.margin-left.px]="0">
     <router-outlet></router-outlet>
   </main>
-
 </div>

@@ -1,62 +1,223 @@
-<h2>Gestion des Trajets</h2>
-<p>Ajouter, modifier ou supprimer les trajets disponibles.</p>
+<div class="dashboard-scroll">
+  <!-- En-tête -->
+  <div class="header-section">
+    <h2>
+      <i class="bi bi-bus-front"></i>
+      Gestion des Trajets
+    </h2>
+    <p>
+      <i class="bi bi-info-circle"></i>
+      Ajouter, modifier ou supprimer les trajets disponibles.
+    </p>
+  </div>
 
-<hr />
+  <hr class="divider" />
 
-<form (ngSubmit)="submit()" style="margin-bottom: 20px;">
-  <label>Ville de départ :</label>
-  <input [(ngModel)]="form.departure" name="departure" required />
+  <!-- Messages -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    {{ errorMessage }}
+  </div>
 
-  <label>Ville d’arrivée :</label>
-  <input [(ngModel)]="form.destination" name="destination" required />
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="bi bi-check-circle-fill"></i>
+    {{ successMessage }}
+  </div>
 
-  <label>Heure de départ :</label>
-  <input
-    type="datetime-local"
-    [(ngModel)]="form.departure_time"
-    name="departure_time"
-    required
-  />
+  <!-- Formulaire -->
+  <div class="form-container">
+    <form (ngSubmit)="submit()" #trajetForm="ngForm">
+      <div class="form-grid">
+        <!-- Départ -->
+        <div class="form-group">
+          <label>
+            <i class="bi bi-geo-alt-fill"></i>
+            Ville de départ
+          </label>
+          <input 
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.departure" 
+            name="departure" 
+            required
+            placeholder="Ex: Dakar"
+          />
+        </div>
 
-  <label>Prix :</label>
-  <input type="number" [(ngModel)]="form.price" name="price" required />
+        <!-- Destination -->
+        <div class="form-group">
+          <label>
+            <i class="bi bi-geo-alt-fill"></i>
+            Ville d'arrivée
+          </label>
+          <input 
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.destination" 
+            name="destination" 
+            required
+            placeholder="Ex: Thiès"
+          />
+        </div>
 
-  <label>Véhicule :</label>
-  <select [(ngModel)]="form.car_id" name="car_id" required>
-    <option [ngValue]="0">-- Sélectionner un véhicule --</option>
-    <option *ngFor="let c of cars" [ngValue]="c.id">
-      {{ c.number }} ({{ c.seats }} places)
-  </option>
-  </select>
+        <!-- Date/heure -->
+        <div class="form-group">
+          <label>
+            <i class="bi bi-clock-fill"></i>
+            Heure de départ
+          </label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            [(ngModel)]="form.departure_time"
+            name="departure_time"
+            required
+          />
+        </div>
 
-  <button type="submit">{{ isEdit ? 'Mettre à jour' : 'Ajouter' }}</button>
-  <button type="button" (click)="reset()">Annuler</button>
-</form>
+        <!-- Prix -->
+        <div class="form-group">
+          <label>
+            <i class="bi bi-cash-stack"></i>
+            Prix (FCFA)
+          </label>
+          <input 
+            type="number" 
+            class="form-control"
+            [(ngModel)]="form.price" 
+            name="price" 
+            required
+            min="0"
+            step="100"
+            placeholder="Ex: 5000"
+          />
+        </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Départ</th>
-      <th>Arrivée</th>
-      <th>Heure</th>
-      <th>Prix</th>
-      <th>Véhicule</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let t of trajets">
-      <td>{{ t.id }}</td>
-      <td>{{ t.departure }}</td>
-      <td>{{ t.destination }}</td>
-      <td>{{ t.departure_time | date:'short' }}</td>
-      <td>{{ t.price | currency:'FCFA' }}</td>
-      <td>{{ t.car?.number }}</td>
-      <td>
-        <button (click)="edit(t)">Modifier</button>
-        <button (click)="delete(t.id)">Supprimer</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <!-- Véhicule -->
+        <div class="form-group">
+          <label>
+            <i class="bi bi-truck-front-fill"></i>
+            Véhicule
+          </label>
+          <select 
+            class="form-control"
+            [(ngModel)]="form.car_id" 
+            name="car_id" 
+            required
+          >
+            <option [ngValue]="undefined">-- Sélectionner un véhicule --</option>
+            <option *ngFor="let car of cars" [ngValue]="car.id">
+              {{ car.number }} ({{ car.seats }} places)
+            </option>
+          </select>
+        </div>
+
+        <!-- Boutons -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn-submit"
+            [disabled]="!trajetForm.form.valid || submitting"
+          >
+            <i class="bi" [class.bi-pencil-square]="isEdit" [class.bi-plus-circle]="!isEdit"></i>
+            {{ submitting ? 'En cours...' : (isEdit ? 'Mettre à jour' : 'Ajouter') }}
+          </button>
+          <button 
+            type="button" 
+            class="btn-reset"
+            (click)="reset()"
+            *ngIf="isEdit"
+          >
+            <i class="bi bi-x-circle"></i>
+            Annuler
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Statistiques rapides -->
+  <div class="stats-mini" *ngIf="trajets.length > 0">
+    <div class="stat-mini-card">
+      <i class="bi bi-bus-front"></i>
+      <span class="stat-value">{{ trajets.length }}</span>
+      <span class="stat-label">Total trajets</span>
+    </div>
+    <div class="stat-mini-card">
+      <i class="bi bi-calendar-day"></i>
+      <span class="stat-value">{{ getTodayTrajetsCount() }}</span>
+      <span class="stat-label">Aujourd'hui</span>
+    </div>
+    <div class="stat-mini-card">
+      <i class="bi bi-truck-front"></i>
+      <span class="stat-value">{{ cars.length }}</span>
+      <span class="stat-label">Véhicules</span>
+    </div>
+  </div>
+
+  <!-- Tableau des trajets -->
+  <div class="table-container">
+    <div class="table-header">
+      <h3>Liste des trajets</h3>
+      <span class="badge">{{ trajets.length }} trajet(s)</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Départ</th>
+            <th>Arrivée</th>
+            <th>Date/Heure</th>
+            <th>Prix</th>
+            <th>Véhicule</th>
+            <th>Places</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let trajet of trajets; let i = index">
+            <td>N°{{ trajet.id }}</td>
+            <td>{{ trajet.departure }}</td>
+            <td>{{ trajet.destination }}</td>
+            <td>{{ formatDate(trajet.departure_time) }}</td>
+            <td class="price">{{ trajet.price | currency:'FCFA':'symbol':'1.0-0' }}</td>
+            <td>{{ trajet.car?.number || 'N/A' }}</td>
+            <td>{{ trajet.car?.seats || '-' }}</td>
+            <td class="actions">
+              <button 
+                class="btn-edit" 
+                (click)="edit(trajet)"
+                title="Modifier"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button 
+                class="btn-delete" 
+                (click)="delete(trajet.id)"
+                title="Supprimer"
+              >
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="trajets.length === 0">
+            <td colspan="8" class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <p>Aucun trajet trouvé</p>
+              <small>Commencez par ajouter un trajet</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Indicateur de scroll (optionnel) -->
+  <div class="scroll-hint" *ngIf="trajets.length > 5">
+    <i class="bi bi-arrow-down"></i>
+    <span>Défiler pour voir plus de trajets</span>
+    <i class="bi bi-arrow-down"></i>
+  </div>
+</div>

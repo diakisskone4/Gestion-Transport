@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule, Router } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-admin-layout',
@@ -14,19 +13,8 @@ export class AdminLayoutComponent {
   // Propriété pour gérer l'état de la sidebar (ouverte/fermée)
   isSidebarCollapsed = false;
 
-  constructor(
-
-    private router: Router
-  ) {}
-
   // Méthode pour basculer l'état de la sidebar
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
-  }
-
-  // Méthode de déconnexion
-  logout() {
-   
-    this.router.navigate(['/login']);
   }
 }

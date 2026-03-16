@@ -1,48 +1,318 @@
-<h2>Dashboard Administrateur</h2>
-<p>Bienvenue dans l’espace d’administration du système de transport.</p>
-
-<hr />
-
-<!-- Chargement -->
-<p *ngIf="loading">Chargement des statistiques...</p>
-
-<!-- Statistiques -->
-<div *ngIf="!loading" style="display:grid; grid-template-columns: repeat(2,1fr); gap:15px; max-width:700px">
-
-  <div style="background:#fff; border-left:5px solid #0d6efd; padding:15px">
-    <h3>Trajets</h3>
-    <p><strong>{{ stats.trajets }}</strong> trajets enregistrés</p>
-    <a routerLink="/admin/trajets"><button>Gérer</button></a>
+<div class="dashboard-container dashboard-scroll">
+  <!-- En-tête du dashboard -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h2 class="dashboard-title">
+        <i class="bi bi-speedometer2"></i>
+        Dashboard Administrateur
+      </h2>
+      <p class="dashboard-welcome">
+        <i class="bi bi-person-circle"></i>
+        Bienvenue dans l’espace d’administration du système de transport.
+      </p>
+    </div>
+    <div class="header-actions">
+      <span class="badge bg-primary">
+        <i class="bi bi-shield-check"></i>
+        Administrateur
+      </span>
+    </div>
   </div>
 
-  <div style="background:#fff; border-left:5px solid #198754; padding:15px">
-    <h3>Réservations</h3>
-    <p><strong>{{ stats.reservations }}</strong> réservations</p>
-    <a routerLink="/admin/reservations"><button>Voir</button></a>
+  <hr class="divider" />
+
+  <!-- Statistiques Cards -->
+  <div class="stats-grid">
+    <!-- Card Trajets -->
+    <div class="stat-card stat-card-primary">
+      <div class="card-icon">
+        <i class="bi bi-bus-front"></i>
+      </div>
+      <div class="card-content">
+        <h3>Trajets</h3>
+        <p class="stat-number">{{ stats.trajets }}</p>
+        <p class="stat-label">trajets enregistrés</p>
+        <a routerLink="/admin/trajets" class="btn-stat">
+          Gérer <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Card Réservations -->
+    <div class="stat-card stat-card-success">
+      <div class="card-icon">
+        <i class="bi bi-ticket-perforated"></i>
+      </div>
+      <div class="card-content">
+        <h3>Réservations</h3>
+        <p class="stat-number">{{ stats.reservations }}</p>
+        <p class="stat-label">réservations actives</p>
+        <a routerLink="/admin/reservations" class="btn-stat">
+          Voir <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Card Paiements -->
+    <div class="stat-card stat-card-warning">
+      <div class="card-icon">
+        <i class="bi bi-credit-card"></i>
+      </div>
+      <div class="card-content">
+        <h3>Paiements</h3>
+        <p class="stat-number">{{ stats.paiements }}</p>
+        <p class="stat-label">transactions</p>
+        <p class="stat-total">
+          Total: <strong>{{ stats.total_montant | currency:'FCFA':'symbol':'1.0-0' }}</strong>
+        </p>
+        <a routerLink="/admin/paiements" class="btn-stat">
+          Voir <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Card Messages -->
+    <div class="stat-card stat-card-danger">
+      <div class="card-icon">
+        <i class="bi bi-chat-dots"></i>
+      </div>
+      <div class="card-content">
+        <h3>Messages</h3>
+        <p class="stat-number">{{ stats.messages }}</p>
+        <p class="stat-label">messages non lus</p>
+        <a routerLink="/admin/chat" class="btn-stat">
+          Ouvrir <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
   </div>
 
-  <div style="background:#fff; border-left:5px solid #ffc107; padding:15px">
-    <h3>Paiements</h3>
-    <p><strong>{{ stats.paiements }}</strong> paiements</p>
-    <p>Total : <strong>{{ stats.total_montant | currency:'FCFA' }}</strong></p>
-    <a routerLink="/admin/paiements"><button>Voir</button></a>
+  <!-- Section Activités Récentes -->
+  <div class="recent-activities-section">
+    <div class="section-header">
+      <div class="section-title">
+        <i class="bi bi-clock-history"></i>
+        <h3>Aperçu des activités récentes</h3>
+      </div>
+      <a routerLink="/admin/activites" class="view-all-link">
+        Voir tout <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="activities-grid">
+      <!-- Graphique d'activité -->
+      <div class="activity-chart-card">
+        <div class="card-header">
+          <h4>Activités des 7 derniers jours</h4>
+          <select class="chart-filter">
+            <option>Cette semaine</option>
+            <option>Ce mois</option>
+            <option>Cette année</option>
+          </select>
+        </div>
+        <div class="chart-container">
+          <div class="chart-bars">
+            <div class="bar-item">
+              <div class="bar" style="height: 75%"></div>
+              <span>Lun</span>
+            </div>
+            <div class="bar-item">
+              <div class="bar" style="height: 90%"></div>
+              <span>Mar</span>
+            </div>
+            <div class="bar-item">
+              <div class="bar" style="height: 60%"></div>
+              <span>Mer</span>
+            </div>
+            <div class="bar-item">
+              <div class="bar" style="height: 85%"></div>
+              <span>Jeu</span>
+            </div>
+            <div class="bar-item">
+              <div class="bar" style="height: 70%"></div>
+              <span>Ven</span>
+            </div>
+            <div class="bar-item">
+              <div class="bar" style="height: 95%"></div>
+              <span>Sam</span>
+            </div>
+            <div class="bar-item">
+              <div class="bar" style="height: 80%"></div>
+              <span>Dim</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-stats">
+          <div class="stat-item">
+            <span class="stat-value">+23%</span>
+            <span class="stat-label">vs semaine dernière</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">1,284</span>
+            <span class="stat-label">total activités</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dernières réservations -->
+      <div class="recent-list-card">
+        <div class="card-header">
+          <h4>Dernières réservations</h4>
+          <i class="bi bi-three-dots-vertical"></i>
+        </div>
+        <div class="list-items">
+          <div class="list-item">
+            <div class="item-avatar" style="background: #e3f2fd; color: #0d6efd">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Jean Dupont</p>
+              <p class="item-subtitle">Trajet: Dakar - Thiès</p>
+            </div>
+            <span class="item-time">Il y a 5 min</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #e8f5e9; color: #198754">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Marie Diouf</p>
+              <p class="item-subtitle">Trajet: Dakar - Mbour</p>
+            </div>
+            <span class="item-time">Il y a 15 min</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #fff3e0; color: #ffc107">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Omar Sy</p>
+              <p class="item-subtitle">Trajet: Dakar - Saint-Louis</p>
+            </div>
+            <span class="item-time">Il y a 32 min</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #fce4ec; color: #dc3545">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Aïssatou Diallo</p>
+              <p class="item-subtitle">Trajet: Dakar - Kaolack</p>
+            </div>
+            <span class="item-time">Il y a 1h</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #e3f2fd; color: #0d6efd">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Modou Ndiaye</p>
+              <p class="item-subtitle">Trajet: Dakar - Mbour</p>
+            </div>
+            <span class="item-time">Il y a 2h</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #e8f5e9; color: #198754">
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Fatima Diallo</p>
+              <p class="item-subtitle">Trajet: Thiès - Dakar</p>
+            </div>
+            <span class="item-time">Il y a 3h</span>
+          </div>
+        </div>
+        <a routerLink="/admin/reservations" class="list-footer">
+          Voir toutes les réservations
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Derniers messages -->
+      <div class="recent-list-card">
+        <div class="card-header">
+          <h4>Derniers messages</h4>
+          <i class="bi bi-three-dots-vertical"></i>
+        </div>
+        <div class="list-items">
+          <div class="list-item">
+            <div class="item-avatar" style="background: #e3f2fd">
+              <i class="bi bi-chat"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Support Client</p>
+              <p class="item-subtitle">Problème de réservation...</p>
+            </div>
+            <span class="item-badge">Nouveau</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #e8f5e9">
+              <i class="bi bi-chat"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Babacar Ndiaye</p>
+              <p class="item-subtitle">Question sur les horaires...</p>
+            </div>
+            <span class="item-badge">Nouveau</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #f5f5f5">
+              <i class="bi bi-chat"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Fatou Sarr</p>
+              <p class="item-subtitle">Merci pour votre service...</p>
+            </div>
+            <span class="item-time">Il y a 2h</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #f5f5f5">
+              <i class="bi bi-chat"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Moussa Fall</p>
+              <p class="item-subtitle">Réclamation bagage...</p>
+            </div>
+            <span class="item-time">Il y a 3h</span>
+          </div>
+          <div class="list-item">
+            <div class="item-avatar" style="background: #fff3e0">
+              <i class="bi bi-chat"></i>
+            </div>
+            <div class="item-info">
+              <p class="item-title">Aminata Sow</p>
+              <p class="item-subtitle">Demande d'information...</p>
+            </div>
+            <span class="item-time">Il y a 4h</span>
+          </div>
+        </div>
+        <a routerLink="/admin/chat" class="list-footer">
+          Voir tous les messages
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
   </div>
 
-  <div style="background:#fff; border-left:5px solid #dc3545; padding:15px">
-    <h3>Messages</h3>
-    <p><strong>{{ stats.messages }}</strong> messages</p>
-    <a routerLink="/admin/chat"><button>Ouvrir</button></a>
+  <!-- Indicateur de scroll -->
+  <div class="scroll-hint">
+    <i class="bi bi-arrow-down"></i>
+    <span>Défiler pour voir plus</span>
+    <i class="bi bi-arrow-down"></i>
   </div>
 
+  <hr class="divider" />
+
+  <!-- Footer du dashboard -->
+  <div class="dashboard-footer">
+    <div class="user-info">
+      <i class="bi bi-person-badge text-primary"></i>
+      <p>Vous êtes connecté en tant qu’<strong>Administrateur</strong></p>
+    </div>
+    
+    <button (click)="logout()" class="btn-logout">
+      <i class="bi bi-box-arrow-right"></i>
+      Se déconnecter
+    </button>
+  </div>
 </div>
-
-<hr />
-
-<p>Vous êtes connecté en tant qu’<strong>Administrateur</strong>.</p>
-
-<button
-  (click)="logout()"
-  style="margin-top:20px; background:#d9534f; color:white; border:none; padding:10px 15px; border-radius:4px; cursor:pointer"
->
-  Se déconnecter
-</button>

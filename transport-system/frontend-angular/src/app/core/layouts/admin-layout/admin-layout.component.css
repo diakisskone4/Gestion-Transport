@@ -1,0 +1,343 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #ffffff;
+  position: relative;
+}
+
+/* ===== SIDEBAR / MENU ADMIN ===== */
+aside {
+  width: 280px;
+  background: linear-gradient(135deg, #0d6efd, #0099ff);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 20px rgba(13, 110, 253, 0.3);
+  transition: all 0.3s ease;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Sidebar réduite (pour la fonction toggle) */
+aside.collapsed {
+  width: 80px;
+  padding: 2rem 0.75rem;
+}
+
+aside.collapsed h3 {
+  font-size: 0;
+  margin: 1rem 0;
+  position: relative;
+}
+
+aside.collapsed h3::after {
+  content: '👤';
+  font-size: 1.5rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+}
+
+aside.collapsed a {
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+aside.collapsed a span {
+  display: none;
+}
+
+aside.collapsed a i {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* En-tête de la sidebar */
+aside h3 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+aside h3::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Liens de navigation */
+aside a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  margin: 0.3rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+aside a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: white;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+aside a i {
+  font-size: 1.3rem;
+  width: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* État actif */
+aside a.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-weight: 600;
+}
+
+aside a.active::before {
+  transform: scaleY(1);
+}
+
+aside a.active i {
+  color: white;
+}
+
+/* Effet hover */
+aside a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(5px);
+}
+
+aside a:hover i {
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Lien de déconnexion spécial */
+aside a:last-child {
+  margin-top: auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+aside a:last-child i {
+  color: white;
+}
+
+aside a:last-child:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  color: white;
+}
+
+/* ===== BOUTON TOGGLE SIDEBAR ===== */
+.sidebar-toggle {
+  position: fixed;
+  left: 280px;
+  top: 20px;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 2px solid #0d6efd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+}
+
+.sidebar-toggle:hover {
+  background: #0d6efd;
+  transform: scale(1.1);
+}
+
+.sidebar-toggle:hover i {
+  color: white;
+}
+
+.sidebar-toggle i {
+  color: #0d6efd;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle.collapsed {
+  left: 80px;
+}
+
+.sidebar-toggle.collapsed i {
+  transform: rotate(180deg);
+}
+
+/* ===== MAIN CONTENT AVEC SCROLL (FOND BLANC) ===== */
+main {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Barre de défilement personnalisée pour le main */
+main::-webkit-scrollbar {
+  width: 8px;
+}
+
+main::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+main::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0d6efd, #0099ff);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0b5ed7, #0088ff);
+  cursor: pointer;
+}
+
+/* Pour Firefox */
+main {
+  scrollbar-width: thin;
+  scrollbar-color: #0d6efd #f1f5f9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  aside {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    transform: translateX(0);
+    box-shadow: 2px 0 20px rgba(13, 110, 253, 0.3);
+  }
+  
+  aside.collapsed {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar-toggle {
+    left: 280px;
+  }
+  
+  .sidebar-toggle.collapsed {
+    left: 20px;
+  }
+  
+  main {
+    margin-left: 0;
+    height: 100vh;
+  }
+}
+
+@media (max-width: 768px) {
+  aside {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .sidebar-toggle {
+    width: 28px;
+    height: 28px;
+    top: 15px;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+aside a {
+  animation: slideIn 0.3s ease forwards;
+  animation-delay: calc(var(--item-index) * 0.05s);
+}
+
+/* ===== BARRE DE DÉFILEMENT SIDEBAR ===== */
+aside::-webkit-scrollbar {
+  width: 4px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+aside::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+  background: white;
+}
+
+/* ===== BADGE DE NOTIFICATION ===== */
+.notification-badge {
+  background: #dc3545;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50px;
+  margin-left: auto;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

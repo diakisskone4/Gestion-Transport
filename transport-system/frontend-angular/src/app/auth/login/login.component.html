@@ -1,30 +1,115 @@
-<div class="form-container">
-  <h2>Connexion</h2>
+<div class="login-container">
+  <!-- Section gauche - Formulaire de connexion -->
+  <div class="login-form-section">
+    <div class="form-wrapper">
+      <div class="logo">
+        <i class="bi bi-bus-front"></i>
+        <span>G-TRANSPORT</span>
+      </div>
 
-  <div class="input-group">
-    <input
-      [(ngModel)]="username"
-      placeholder="Nom d'utilisateur"
-      required
-    >
+      <h2>Bienvenue !</h2>
+      <p class="subtitle">Connectez-vous pour accéder à votre espace</p>
+
+      <div class="form-container">
+        <div class="input-group">
+          <i class="bi bi-person"></i>
+          <input
+            [(ngModel)]="username"
+            type="text"
+            placeholder="Nom d'utilisateur"
+            required
+            (keyup.enter)="login()"
+          >
+        </div>
+
+        <div class="input-group">
+          <i class="bi bi-lock"></i>
+          <input
+            [(ngModel)]="password"
+            type="password"
+            placeholder="Mot de passe"
+            required
+            (keyup.enter)="login()"
+          >
+        </div>
+
+        <div class="options-row">
+          <label class="remember-me">
+            <input type="checkbox" checked>
+            <span>Se souvenir de moi</span>
+          </label>
+          <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+        </div>
+
+        <button 
+          class="login-btn" 
+          (click)="login()" 
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading">Se connecter</span>
+          <span *ngIf="loading" class="spinner"></span>
+        </button>
+
+        <div class="error-message" *ngIf="error">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          {{ error }}
+        </div>
+
+        <div class="register-link">
+          <span>Pas encore de compte ?</span>
+          <a routerLink="/register">Créer un compte</a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Conditions d'utilisation</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Aide</a>
+      </div>
+    </div>
   </div>
 
-  <div class="input-group">
-    <input
-      [(ngModel)]="password"
-      type="password"
-      placeholder="Mot de passe"
-      required
-    >
+  <!-- Section droite - Image et contenu promotionnel -->
+  <div class="login-image-section">
+    <div class="overlay">
+      <div class="content">
+        <h1>Voyagez en toute sérénité</h1>
+        <p>Réservez vos billets de transport en quelques clics et profitez d'un voyage confortable à travers le pays.</p>
+        
+        <div class="features">
+          <div class="feature">
+            <i class="bi bi-shield-check"></i>
+            <span>Sécurité garantie</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-clock"></i>
+            <span>Réservation 24/7</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-wifi"></i>
+            <span>WiFi à bord</span>
+          </div>
+          <div class="feature">
+            <i class="bi bi-cash-stack"></i>
+            <span>Paiement sécurisé</span>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-value">10K+</span>
+            <span class="stat-label">Clients satisfaits</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">500+</span>
+            <span class="stat-label">Trajets quotidiens</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">50+</span>
+            <span class="stat-label">Véhicules</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <button (click)="login()" [disabled]="loading">
-    {{ loading ? 'Connexion...' : 'Se connecter' }}
-  </button>
-
-  <p class="error-message" *ngIf="error">{{ error }}</p>
-
-  <a class="register-link" routerLink="/register">
-    Créer un compte
-  </a>
 </div>

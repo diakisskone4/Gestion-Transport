@@ -1,52 +1,93 @@
-<h2>Gestion des Paiements</h2>
-<p>Liste des paiements effectués par les clients.</p>
+<div class="dashboard-scroll">
+  <!-- En-tête -->
+  <div class="header-section">
+    <h2>
+      <i class="bi bi-credit-card"></i>
+      Gestion des Paiements
+    </h2>
+    <p>
+      <i class="bi bi-info-circle"></i>
+      Liste des paiements effectués par les clients.
+    </p>
+  </div>
 
-<hr />
+  <hr class="divider" />
 
-<!-- ⏳ Chargement -->
-<p *ngIf="loading" class="text-muted">
-  Chargement des paiements...
-</p>
+  <!-- Message d'information -->
+  <div *ngIf="message" class="alert alert-info">
+    <i class="bi bi-info-circle-fill"></i>
+    {{ message }}
+  </div>
 
-<!-- ℹ️ Message -->
-<p *ngIf="message && !loading" class="alert alert-info">
-  {{ message }}
-</p>
+  <!-- Statistiques rapides -->
+  <div class="stats-mini" *ngIf="paiements.length > 0">
+    <div class="stat-mini-card">
+      <i class="bi bi-credit-card"></i>
+      <span class="stat-value">{{ paiements.length }}</span>
+      <span class="stat-label">Total paiements</span>
+    </div>
+    <div class="stat-mini-card">
+      <i class="bi bi-cash-stack"></i>
+      <span class="stat-value">{{ getTotalMontant() | number }} FCFA</span>
+      <span class="stat-label">Montant total</span>
+    </div>
+    <div class="stat-mini-card">
+      <i class="bi bi-check-circle"></i>
+      <span class="stat-value">{{ getPaiementsPayes() }}</span>
+      <span class="stat-label">Paiements payés</span>
+    </div>
+  </div>
 
-<!-- 📊 Tableau des paiements -->
-<table
-  class="table table-bordered table-striped"
-  *ngIf="!loading && paiements.length > 0"
->
-  <thead class="table-dark">
-    <tr>
-      <th>ID</th>
-      <th>Réservation</th>
-      <th>Montant</th>
-      <th>Date</th>
-      <th>Statut</th>
-    </tr>
-  </thead>
+  <!-- Tableau des paiements -->
+  <div class="table-container" *ngIf="paiements.length > 0">
+    <div class="table-header">
+      <h3>Liste des paiements</h3>
+      <span class="badge">{{ paiements.length }} paiement(s)</span>
+    </div>
 
-  <tbody>
-    <tr *ngFor="let p of paiements; trackBy: trackById">
-      <td>{{ p.id }}</td>
-      <td>Réservation #{{ p.reservation }}</td>
-      <td>{{ p.montant }} FCFA</td>
-      <td>{{ p.date_paiement | date:'short' }}</td>
-      <td>
-        <span class="badge bg-success" *ngIf="p.statut === 'PAYE'">
-          PAYÉ
-        </span>
-        <span class="badge bg-secondary" *ngIf="p.statut !== 'PAYE'">
-          {{ p.statut }}
-        </span>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Réservation</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of paiements; trackBy: trackById">
+            <td>N°{{ p.id }}</td>
+            <td>
+              <span class="reservation-badge">
+                <i class="bi bi-ticket-perforated"></i>
+                Réservation de {{ p.reservation }} Place(s)
+              </span>
+            </td>
+            <td class="montant">{{ p.montant | number }} FCFA</td>
+            <td>
+              <span class="date-badge">
+                <i class="bi bi-clock"></i>
+                {{ p.date_paiement | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge" [class.status-paye]="p.statut === 'PAYE'" [class.status-autre]="p.statut !== 'PAYE'">
+                <i class="bi" [class.bi-check-circle-fill]="p.statut === 'PAYE'" [class.bi-hourglass-split]="p.statut !== 'PAYE'"></i>
+                {{ p.statut }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<!-- 🚫 Aucun paiement -->
-<p *ngIf="!loading && paiements.length === 0 && !message" class="text-muted">
-  Aucun paiement enregistré.
-</p>
+  <!-- Aucun paiement -->
+  <div *ngIf="paiements.length === 0 && !message" class="empty-state-container">
+    <i class="bi bi-credit-card"></i>
+    <p>Aucun paiement enregistré</p>
+    <small>Les paiements apparaîtront ici</small>
+  </div>
+</div>

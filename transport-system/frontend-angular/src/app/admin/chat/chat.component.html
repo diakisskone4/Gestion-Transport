@@ -1,15 +1,19 @@
 <div class="chat-container">
-
+  <!-- En-tête -->
   <div class="chat-header">
     <span>Chat Administrateur</span>
   </div>
 
-  <!-- Sélection du client par NOM -->
-  <div style="padding:10px; background:#f0f0f0;">
+  <!-- Sélection du client -->
+  <div class="client-selector">
+    <label>
+      <i class="bi bi-person-badge"></i>
+      Sélectionner un client
+    </label>
     <select
+      class="client-select"
       [(ngModel)]="selectedClientId"
       (change)="load()"
-      style="width:100%; padding:8px;"
     >
       <option value="">— Sélectionner un client —</option>
       <option *ngFor="let c of clients" [value]="c.id">
@@ -18,7 +22,14 @@
     </select>
   </div>
 
+  <!-- Messages -->
   <div class="chat-messages">
+    <div *ngIf="!selectedClientId" class="empty-chat">
+      <i class="bi bi-chat-dots"></i>
+      <p>Sélectionnez un client pour commencer</p>
+      <small>Choisissez un client dans la liste ci-dessus</small>
+    </div>
+
     <div
       *ngFor="let m of messages"
       class="message"
@@ -26,25 +37,33 @@
       [class.received]="!isSent(m)"
     >
       <div class="bubble">
-        <strong>{{ m.expediteur?.username }}</strong><br>
-        {{ m.contenu }}
-        <div class="time">{{ m.date | date:'shortTime' }}</div>
+        <strong>{{ m.expediteur?.username }}</strong>
+        <p>{{ m.contenu }}</p>
+        <div class="time">{{ m.date | date:'HH:mm' }}</div>
       </div>
+    </div>
+
+    <div *ngIf="selectedClientId && messages.length === 0" class="empty-chat">
+      <i class="bi bi-chat"></i>
+      <p>Aucun message pour le moment</p>
+      <small>Envoyez le premier message</small>
     </div>
   </div>
 
+  <!-- Zone de saisie -->
   <div class="chat-input">
     <input
       [(ngModel)]="contenu"
-      placeholder="Message..."
+      placeholder="Votre message..."
       [disabled]="!selectedClientId"
+      (keyup.enter)="envoyer()"
     />
     <button
       (click)="envoyer()"
-      [disabled]="!selectedClientId"
+      [disabled]="!selectedClientId || !contenu.trim()"
+      title="Envoyer"
     >
-      ➤
+      <i class="bi bi-send"></i>
     </button>
   </div>
-
 </div>
